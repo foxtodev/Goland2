@@ -50,7 +50,6 @@ Sum of all the elements of the array equal: 10
 #### 02
 ###### Напишите функцию которая создает файл в файловой системе и использует отложенный вызов функций для безопасного закрытия файла
 
-
 ```go
 func createFile(fileName string) {
 	_, err := os.Stat(fileName)

@@ -49,6 +49,7 @@ func createFile(fileName string) {
 		}
 	}()
 	_, _ = fmt.Fprintln(f, "File created")
+	_, _ = fmt.Fprintln(f, time.Now().Format("2006/1/2 15:04"))
 }
 
 func main() {
