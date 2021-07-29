@@ -1,4 +1,4 @@
-module github.com/foxtodev/print
+module Lesson03
 
 go 1.16
 
