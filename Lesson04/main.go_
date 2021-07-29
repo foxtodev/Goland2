@@ -1,0 +1,33 @@
+package main
+
+import (
+	"fmt"
+)
+
+type work struct {
+	id     int
+	result int
+}
+
+func worker(id int, results chan<- work) {
+	count := 0
+	for ; count < 1000; count++ {
+		// do something
+	}
+	results <- work{id, count}
+}
+
+func main() {
+
+	results := make(chan work, 100)
+
+	for wid := 1; wid <= 20; wid++ {
+		go worker(wid, results)
+	}
+
+	for a := 1; a <= 20; a++ {
+		val := <-results
+		fmt.Println("worker", val.id, "success counting", val.result)
+	}
+
+}
