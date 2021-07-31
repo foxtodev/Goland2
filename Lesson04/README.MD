@@ -91,3 +91,21 @@ output by CTRL+C
 ```
 ^C > Cancelled by SIGTERM
 ```
+<br>
+
+ ###### Maybe I didn't understand the task and I should have done it like this
+
+```go
+	chSig := make(chan os.Signal, 1)
+	signal.Notify(chSig, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-chSig
+		close(chSig)
+	}()
+
+	for val := range chSig {
+		fmt.Println(" > Cancelled by SIGTERM", val)
+		time.Sleep(1 * time.Second)
+		os.Exit(0)
+	}
+```

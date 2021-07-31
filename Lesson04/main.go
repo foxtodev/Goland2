@@ -30,7 +30,7 @@ func main() {
 		}()
 	}
 
-	// time.Sleep(1 * time.Second)
+	// time.Sleep(1 * time.Second) // wait start gourines
 	// for val := range ch {
 	// 	fmt.Println("WorkID", val.id, "Received", val.result)
 	// 	if val.result == 1000 {
@@ -45,7 +45,6 @@ func main() {
 			break
 		}
 	}
-
 	if count == 1000 {
 		fmt.Println("Success counting", count)
 	} else {
@@ -72,5 +71,33 @@ func main() {
 			fmt.Println(" > Cancelled by SIGTERM")
 		}
 	}
+
+	// checking whether the channel is closed
+
+	// chSig := make(chan os.Signal, 1)
+	// signal.Notify(chSig, os.Interrupt, syscall.SIGTERM)
+	// go func() {
+	// 	<-chSig
+	// 	close(chSig)
+	// }()
+	// for val := range chSig {
+	// 	fmt.Println(" > Cancelled by SIGTERM", val)
+	// 	time.Sleep(1 * time.Second)
+	// 	os.Exit(0)
+	// }
+
+	// with sync
+
+	// var wg sync.WaitGroup
+	// wg.Add(1)
+	// chSig := make(chan os.Signal, 1)
+	// signal.Notify(chSig, os.Interrupt, syscall.SIGTERM)
+	// go func() {
+	// 	<-chSig
+	// 	time.Sleep(1 * time.Second)
+	// 	wg.Done()
+	// 	os.Exit(0)
+	// }()
+	// wg.Wait()
 
 }
