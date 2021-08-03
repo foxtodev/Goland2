@@ -7,7 +7,7 @@ func unbuff() {
   
   counter := 0
   
-  increase := func(donr chan<- struct{}) {
+  increase := func(done chan<- struct{}) {
     <-mutex // Lock
     counter++
     if counter == 1000 {
@@ -33,7 +33,7 @@ func buff() {
   
   counter := 0
   
-  increase := func(donr chan<- struct{}) {
+  increase := func(done chan<- struct{}) {
     for { // we are not limited to 1000
       mutex <- struct {}{} // Lock
       counter++
