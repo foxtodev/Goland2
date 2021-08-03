@@ -1,0 +1,61 @@
+package main
+
+import "fmt"
+
+func unbuff() {
+  mutex := make(chan struct{})
+  
+  counter := 0
+  
+  increase := func(donr chan<- struct{}) {
+    <-mutex // Lock
+    counter++
+    if counter == 1000 {
+      done <- struct{}{}
+      return
+    }
+    mutex <- struct {}{} // Unlock
+  }
+  
+  done := make(chan struct{})
+  // make workers pull
+  for i := 0; i < 1000; i++ {
+    go increase(done)
+  }
+  mutex <- struct{}{} // start workers pull
+    
+  <-done
+  fmt.Println(counter) // 1000
+}
+  
+func buff() {
+  mutex := make(chan struct{}, 1)  // 1 !!!
+  
+  counter := 0
+  
+  increase := func(donr chan<- struct{}) {
+    for { // we are not limited to 1000
+      mutex <- struct {}{} // Lock
+      counter++
+      if counter == 1000 {
+        done <- struct{}{}
+        return // without this, there will be race
+      }
+      <-mutex // Unlock
+    }
+  }
+    
+  done := make(chan struct{})
+  // make workers pull
+  for i := 0; i < 10; i++ {
+    go increase(done)
+  }
+  
+  <-done
+  fmt.Println(counter) // 1000
+}
+
+func main() {
+  unbuff()
+  buff()
+}
