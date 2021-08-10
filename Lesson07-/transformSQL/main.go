@@ -14,7 +14,7 @@ func transformSQL1(str string, c ...interface{}) { // Full Shnyaga)))
 	result := ""
 	var (
 		resArgs    []interface{}
-		resArgsStr []string
+		resArgsStr []string // for output as in the task
 	)
 
 	for i, s := range c {
@@ -26,7 +26,7 @@ func transformSQL1(str string, c ...interface{}) { // Full Shnyaga)))
 			k := reflect.ValueOf(s)
 			for i := 0; i < k.Len(); i++ {
 				strSlice = append(strSlice, "?")
-				resArgsStr = append(resArgsStr, strconv.Itoa(int(k.Index(i).Int())))
+				resArgsStr = append(resArgsStr, strconv.Itoa(int(k.Index(i).Int()))) // for output as in the task
 				resArgs = append(resArgs, int(k.Index(i).Int()))
 			}
 			result += strings.Join(strSlice, ", ")
@@ -35,32 +35,32 @@ func transformSQL1(str string, c ...interface{}) { // Full Shnyaga)))
 			k := reflect.ValueOf(s)
 			for i := 0; i < k.Len(); i++ {
 				strSlice = append(strSlice, "?")
-				resArgsStr = append(resArgsStr, "\""+k.Index(i).String()+"\"")
+				resArgsStr = append(resArgsStr, "\""+k.Index(i).String()+"\"") // for output as in the task
 				resArgs = append(resArgs, k.Index(i).String())
 			}
 			result += strings.Join(strSlice, ", ")
 		case bool:
 			result += "?"
-			resArgsStr = append(resArgsStr, strconv.FormatBool(s.(bool)))
+			resArgsStr = append(resArgsStr, strconv.FormatBool(s.(bool))) // for output as in the task
 			resArgs = append(resArgs, s.(bool))
 		case float64:
 			result += "?"
-			resArgsStr = append(resArgsStr, strconv.FormatFloat(s.(float64), 'f', -1, 64))
+			resArgsStr = append(resArgsStr, strconv.FormatFloat(s.(float64), 'f', -1, 64)) // for output as in the task
 			resArgs = append(resArgs, s.(float64))
 		case int:
 			result += "?"
-			resArgsStr = append(resArgsStr, strconv.Itoa(s.(int)))
+			resArgsStr = append(resArgsStr, strconv.Itoa(s.(int))) // for output as in the task
 			resArgs = append(resArgs, s.(int))
 		case string:
 			result += "?"
-			resArgsStr = append(resArgsStr, "\""+s.(string)+"\"")
+			resArgsStr = append(resArgsStr, "\""+s.(string)+"\"") // for output as in the task
 			resArgs = append(resArgs, s.(string))
 		default:
 			// error unknow type
 		}
 	}
 
-	fmt.Printf("\"%s\", []interface{}{ %s }\n", result, strings.Join(resArgsStr, ", "))
+	fmt.Printf("\"%s\", []interface{}{ %s }\n", result, strings.Join(resArgsStr, ", "))  // output as in the task
 
 }
 
@@ -69,7 +69,7 @@ func transformSQL2(str string, c ...interface{}) (string, []interface{}) {
 	strSQL := strings.Split(str, "?")
 	result := ""
 	var (
-		s       []string
+		s       []string // for output as in the task
 		resArgs []interface{}
 	)
 
@@ -79,7 +79,7 @@ func transformSQL2(str string, c ...interface{}) (string, []interface{}) {
 		if st[:1] == "[" {
 			sa := strings.Split(st[1:len(st)-1], " ")
 			for _, si := range sa {
-				s = append(s, si)
+				s = append(s, si) // for output as in the task
 				result += "?,"
 			}
 			result = result[:len(result)-1]
@@ -88,11 +88,13 @@ func transformSQL2(str string, c ...interface{}) (string, []interface{}) {
 				resArgs = append(resArgs, k.Index(i).Interface())
 			}
 		} else {
-			s = append(s, st)
+			s = append(s, st) // for output as in the task
 			result += "?"
 			resArgs = append(resArgs, v)
 		}
 	}
+	
+	// fmt.Printf("\"%s\", []interface{}{ %s }\n", result, strings.Join(s, ", ")) // output as in the task
 
 	return result, resArgs
 
