@@ -139,7 +139,7 @@ func transformSQL2(str string, c ...interface{}) (string, []interface{}) {
 	strSQL := strings.Split(str, "?")
 	result := ""
 	var (
-		s       []string
+		s       []string // for output as in the task
 		resArgs []interface{}
 	)
 
@@ -149,7 +149,7 @@ func transformSQL2(str string, c ...interface{}) (string, []interface{}) {
 		if st[:1] == "[" {
 			sa := strings.Split(st[1:len(st)-1], " ")
 			for _, si := range sa {
-				s = append(s, si)
+				s = append(s, si) // for output as in the task
 				result += "?,"
 			}
 			result = result[:len(result)-1]
@@ -158,11 +158,13 @@ func transformSQL2(str string, c ...interface{}) (string, []interface{}) {
 				resArgs = append(resArgs, k.Index(i).Interface())
 			}
 		} else {
-			s = append(s, st)
+			s = append(s, st) // for output as in the task
 			result += "?"
 			resArgs = append(resArgs, v)
 		}
 	}
+	
+	// fmt.Printf("\"%s\", []interface{}{ %s }\n", result, strings.Join(s, ", ")) // output as in the task
 
 	return result, resArgs
 
