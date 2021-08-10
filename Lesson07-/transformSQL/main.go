@@ -47,10 +47,10 @@ func transformSQL1(str string, c ...interface{}) { // Full Shnyaga)))
 			result += "?"
 			resArgsStr = append(resArgsStr, strconv.FormatFloat(s.(float64), 'f', -1, 64)) // for output as in the task
 			resArgs = append(resArgs, s.(float64))
-		case int:
+		case int, int8, int16, int32, int64:
 			result += "?"
-			resArgsStr = append(resArgsStr, strconv.Itoa(s.(int))) // for output as in the task
-			resArgs = append(resArgs, s.(int))
+			resArgsStr = append(resArgsStr, strconv.Itoa(s.(int64))) // for output as in the task
+			resArgs = append(resArgs, s.(int64))
 		case string:
 			result += "?"
 			resArgsStr = append(resArgsStr, "\""+s.(string)+"\"") // for output as in the task
