@@ -72,7 +72,7 @@ func transformSQL1(str string, c ...interface{}) { // Full Shnyaga)))
 	result := ""
 	var (
 		resArgs    []interface{}
-		resArgsStr []string
+		resArgsStr []string // for output as in the task
 	)
 
 	for i, s := range c {
@@ -84,7 +84,7 @@ func transformSQL1(str string, c ...interface{}) { // Full Shnyaga)))
 			k := reflect.ValueOf(s)
 			for i := 0; i < k.Len(); i++ {
 				strSlice = append(strSlice, "?")
-				resArgsStr = append(resArgsStr, strconv.Itoa(int(k.Index(i).Int())))
+				resArgsStr = append(resArgsStr, strconv.Itoa(int(k.Index(i).Int()))) // for output as in the task
 				resArgs = append(resArgs, int(k.Index(i).Int()))
 			}
 			result += strings.Join(strSlice, ", ")
@@ -93,32 +93,32 @@ func transformSQL1(str string, c ...interface{}) { // Full Shnyaga)))
 			k := reflect.ValueOf(s)
 			for i := 0; i < k.Len(); i++ {
 				strSlice = append(strSlice, "?")
-				resArgsStr = append(resArgsStr, "\""+k.Index(i).String()+"\"")
+				resArgsStr = append(resArgsStr, "\""+k.Index(i).String()+"\"") // for output as in the task
 				resArgs = append(resArgs, k.Index(i).String())
 			}
 			result += strings.Join(strSlice, ", ")
 		case bool:
 			result += "?"
-			resArgsStr = append(resArgsStr, strconv.FormatBool(s.(bool)))
+			resArgsStr = append(resArgsStr, strconv.FormatBool(s.(bool))) // for output as in the task
 			resArgs = append(resArgs, s.(bool))
 		case float64:
 			result += "?"
-			resArgsStr = append(resArgsStr, strconv.FormatFloat(s.(float64), 'f', -1, 64))
+			resArgsStr = append(resArgsStr, strconv.FormatFloat(s.(float64), 'f', -1, 64)) // for output as in the task
 			resArgs = append(resArgs, s.(float64))
-		case int:
+		case int, int8, int16, int32, int64:
 			result += "?"
-			resArgsStr = append(resArgsStr, strconv.Itoa(s.(int)))
-			resArgs = append(resArgs, s.(int))
+			resArgsStr = append(resArgsStr, strconv.Itoa(s.(int64))) // for output as in the task
+			resArgs = append(resArgs, s.(int64))
 		case string:
 			result += "?"
-			resArgsStr = append(resArgsStr, "\""+s.(string)+"\"")
+			resArgsStr = append(resArgsStr, "\""+s.(string)+"\"") // for output as in the task
 			resArgs = append(resArgs, s.(string))
 		default:
 			// error unknow type
 		}
 	}
 
-	fmt.Printf("\"%s\", []interface{}{ %s }\n", result, strings.Join(resArgsStr, ", "))
+	fmt.Printf("\"%s\", []interface{}{ %s }\n", result, strings.Join(resArgsStr, ", "))  // output as in the task
 
 }
 ```
