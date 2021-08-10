@@ -63,7 +63,7 @@ int      234
 float64  3.7
  ```
 #### Before the final version there were version 1 (FULL SHNYAGA))) and version 2 (NOT FULL SHNYAGA)))
-#### Variant 1 uses types
+#### Variant 1 uses types - ABANDONED, NOT COMPLETED
 ```go
 func transformSQL1(str string, c ...interface{}) { // Full Shnyaga)))
 
