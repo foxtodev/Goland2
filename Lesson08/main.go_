@@ -1,0 +1,45 @@
+package main
+
+import (
+	"fmt"
+	"os/exec"
+	"strings"
+)
+
+func getFilesInDirectories(dir []string) []string {
+	var ret []string
+
+	for _, item := range dir {
+		c := exec.Command(`find`, item, `-type`, `f`, `-iname`, `*.*`)
+		outBytes, _ := c.Output()
+
+		files := strings.Split(string(outBytes), "\n")
+		for _, fileItem := range files {
+			ret = append(ret, fileItem)
+		}
+	}
+
+	return ret
+}
+
+func main() {
+
+	dirs := []string{"temp"}
+
+	fmt.Println(getFilesInDirectories(dirs))
+
+	// directory := "temp"
+
+	// readDirectory, _ := os.Open(directory)
+	// allFiles, _ := readDirectory.Readdir(0)
+
+	// for f := range allFiles {
+	// 	file := allFiles[f]
+
+	// 	fileName := file.Name()
+	// 	filePath := directory + fileName
+
+	// 	//os.Remove(filePath)
+	// 	fmt.Println(filePath)
+	// }
+}
